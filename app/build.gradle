@@ -22,4 +22,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
+//    //compile 'net.datafans:netty-commom:1.0.0'
+    compile 'net.datafans:netty-common-client:1.0.0'
 }
