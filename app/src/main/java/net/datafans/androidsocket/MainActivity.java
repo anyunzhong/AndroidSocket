@@ -1,13 +1,12 @@
 package net.datafans.androidsocket;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import io.netty.bootstrap.Bootstrap;
+public class MainActivity extends Activity {
 
-public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +14,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SimpleClient.sharedInstance().start();
+            }
+        }).start();
+
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+       // SimpleClient.sharedInstance().terminate();
     }
 
     @Override

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidSocket.iml" filepath="$PROJECT_DIR$/AndroidSocket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-socket-lib/android-socket-lib.iml" filepath="$PROJECT_DIR$/android-socket-lib/android-socket-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
