@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'io.netty:netty-all:4.0.26.Final'
-    compile 'com.alibaba:fastjson:1.2.6'
 }
+
+apply from: 'bintray-publish-github.gradle'
