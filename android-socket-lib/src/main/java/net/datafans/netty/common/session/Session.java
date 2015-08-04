@@ -38,18 +38,6 @@ public class Session {
 		return get(Key.LAST_ACTIVE_TIME);
 	}
 
-	public void setSessionUniqueId(Integer uniqueId) {
-		set(Key.SESSION_UNIQUE_ID, uniqueId);
-	}
-
-	public Integer getSessionUniqueId() {
-		return get(Key.SESSION_UNIQUE_ID);
-	}
-
-	public boolean isValid() {
-		return getSessionUniqueId() != null ? true : false;
-	}
-
 	public synchronized void write(Object pkg) {
 		ctx.writeAndFlush(pkg);
 	}
@@ -73,6 +61,5 @@ public class Session {
 
 	private static class Key {
 		private final static String LAST_ACTIVE_TIME = "last_active_time";
-		private final static String SESSION_UNIQUE_ID = "session_unique_id";
 	}
 }

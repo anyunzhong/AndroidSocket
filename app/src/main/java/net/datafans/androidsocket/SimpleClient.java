@@ -1,11 +1,15 @@
 package net.datafans.androidsocket;
 
+import android.util.Log;
+
 import net.datafans.android.socket.CommonClient;
 import net.datafans.androidsocket.handler.common.constant.Protocal;
 import net.datafans.androidsocket.handler.common.entity.DataPackage;
 import net.datafans.androidsocket.handler.common.handler.DataPackageDecoder;
 import net.datafans.androidsocket.handler.common.handler.DataPackageEncoder;
 import net.datafans.netty.common.config.GlobalConfig;
+import net.datafans.netty.common.constant.ChannelState;
+import net.datafans.netty.common.constant.Tag;
 
 import io.netty.channel.ChannelHandler;
 
@@ -56,6 +60,20 @@ public class SimpleClient extends CommonClient {
         return 10;
     }
 
+
+    @Override
+    protected void onChannelStateChanged(ChannelState state) {
+        Log.e(Tag.NETTY_CLIENT, state.toString());
+
+        if (state == ChannelState.RUNNING){
+            //登陆
+        }
+    }
+
+    @Override
+    public void onMsgReceived(Object msg) {
+        Log.e(Tag.NETTY_CLIENT, msg.toString());
+    }
 
     private static SimpleClient client;
 

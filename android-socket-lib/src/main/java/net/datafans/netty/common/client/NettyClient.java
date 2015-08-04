@@ -62,7 +62,7 @@ public abstract class NettyClient {
 	
 	private void init() throws Exception {
 
-		state = ChannelState.CLOSED;
+		setState(ChannelState.CLOSED);
 		
 
 		UncaughtExceptionUtil.declare();
@@ -100,13 +100,13 @@ public abstract class NettyClient {
 				throw new Exception("LISTEN_PORT_ILLEGAL");
 			}
 			ChannelFuture future = bootstrap.connect(getHost(), getPort()).sync();
-			state = ChannelState.CONNECTING;
+			setState(ChannelState.CONNECTING);
 			future.addListener(channelStartListener);
 
 			future.channel().closeFuture().sync();
 
 		} catch (Exception e) {
-			state = ChannelState.CLOSED;
+			setState(ChannelState.CLOSED);
 			Log.e("android_socket88",e.toString());
 		}
 		
@@ -123,13 +123,13 @@ public abstract class NettyClient {
 		}
 		if (channel != null) {
 			ChannelFuture future = channel.close();
-			state = ChannelState.CLOSING;
+			setState(ChannelState.CLOSING);
 			future.addListener(channelStopListener);
 		}
 
 	}
 
-	public void terminate() {
+	private void terminate() {
 		stop();
 
 		setTerminate(true);
@@ -217,6 +217,8 @@ public abstract class NettyClient {
 
 	protected abstract String getHost();
 
+	protected abstract void onChannelStateChanged(ChannelState state);
+
 	public boolean isTerminate() {
 		return isTerminate;
 	}
@@ -225,6 +227,13 @@ public abstract class NettyClient {
 		this.isTerminate = isTerminate;
 	}
 
+
+	public void setState(ChannelState state) {
+		this.state = state;
+		onChannelStateChanged(state);
+	}
+
+
 	private ChannelFutureListener channelStartListener = new ChannelFutureListener() {
 
 		@Override
@@ -232,12 +241,12 @@ public abstract class NettyClient {
 
 			if (future.isSuccess()) {
 				Log.i("android_socket","CHANNEL_OPENED " + channel);
-				state = ChannelState.RUNNING;
+				setState(ChannelState.RUNNING);
 				restartTryTimes = 0;
 				channel = future.channel();
 			} else {
 				Log.e("android_socket","CHANNEL_CONNECTION_ERROR " + future.cause());
-				state = ChannelState.CLOSED;
+				setState(ChannelState.CLOSED);
 				channel = null;
 			}
 
@@ -248,7 +257,7 @@ public abstract class NettyClient {
 		@Override
 		public void operationComplete(ChannelFuture future) throws Exception {
 			channel = null;
-			state = ChannelState.CLOSED;
+			setState(ChannelState.CLOSED);
 			Log.i("android_socket","CHANNEL_CLOSED");
 		}
 	};
@@ -358,6 +367,8 @@ public abstract class NettyClient {
 		}
 	};
 
+
+
 	private Session getSession() {
 
 		if (channel != null) {
@@ -377,7 +388,7 @@ public abstract class NettyClient {
 			return;
 		}
 
-		session.writeAndClose(pkg);
+		session.write(pkg);
 	}
 
 }

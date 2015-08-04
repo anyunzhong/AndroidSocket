@@ -15,13 +15,22 @@ import io.netty.util.AttributeKey;
 public class DataPackageHandler extends ChannelInboundHandlerAdapter {
 
     private Session session;
+
+    private MsgListener listener;
+
+
+    public  DataPackageHandler(MsgListener listener){
+        this.listener = listener;
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
 
-        Log.i(Tag.NETTY_CLIENT, msg.toString());
         if (session != null) {
             session.setLastActiveTimeToNow();
         }
+
+        if (listener != null) listener.onMsgReceived(msg);
 
     }
 

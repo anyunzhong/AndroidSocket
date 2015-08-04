@@ -8,7 +8,7 @@ import java.util.List;
 
 import io.netty.channel.ChannelHandler;
 
-public abstract class CommonClient extends NettyClient {
+public abstract class CommonClient extends NettyClient implements  MsgListener {
 
     @Override
     public void setHandlerList(List<ChannelHandlerFactory> handlerList) {
@@ -30,7 +30,7 @@ public abstract class CommonClient extends NettyClient {
 
             @Override
             public ChannelHandler build() {
-                return new DataPackageHandler();
+                return new DataPackageHandler(CommonClient.this);
             }
         });
     }
