@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SimpleClient.sharedInstance().start();
+                SimpleClient.sharedInstance().connect();
             }
         }).start();
 

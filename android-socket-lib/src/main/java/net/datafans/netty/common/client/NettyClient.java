@@ -88,7 +88,7 @@ public abstract class NettyClient {
 		autoDetectHeartbeart();
 	}
 
-	public void start() {
+	public void connect() {
 
 		Log.i("android_socket",state.toString());
 		if (state != ChannelState.CLOSED) {
@@ -115,7 +115,7 @@ public abstract class NettyClient {
 
 	}
 
-	public void stop() {
+	public void disconnect() {
 
 		Log.i("android_socket",state.toString());
 		if (state == ChannelState.CLOSED) {
@@ -130,7 +130,7 @@ public abstract class NettyClient {
 	}
 
 	private void terminate() {
-		stop();
+		disconnect();
 
 		setTerminate(true);
 		workGroup.shutdownGracefully();
@@ -273,7 +273,7 @@ public abstract class NettyClient {
 				heartbeatFailTimes++;
 				// 心跳失败
 				if (heartbeatFailTimes >= defaultHeartbeatSendFailThreshold()) {
-					stop();
+					disconnect();
 				}
 			}
 
@@ -294,7 +294,7 @@ public abstract class NettyClient {
 					if (state == ChannelState.CLOSED) {
 						restartTryTimes++;
 						Log.i("android_socket","AUTO_RESTART_TIME " + restartTryTimes);
-						NettyClient.this.start();
+						NettyClient.this.connect();
 					}
 				} catch (Exception e) {
 					Log.e("android_socket","AUTO_RESTART_THREAD_EXCEPTION " + e);
@@ -347,7 +347,7 @@ public abstract class NettyClient {
 						// 心跳超时
 						if (interval > defaultHeartbeatTimeout()) {
 							Log.i("android_socket","AUTO_DETECT_HEARTBEAT_TIMEOUT");
-							stop();
+							disconnect();
 						}
 					}
 
