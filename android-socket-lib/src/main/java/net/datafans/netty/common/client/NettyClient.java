@@ -50,7 +50,6 @@ public abstract class NettyClient {
 
     protected NettyClient() {
 
-
         setState(ChannelState.CLOSED);
     }
 
@@ -60,6 +59,7 @@ public abstract class NettyClient {
 
     private void init() throws Exception {
 
+        setTerminate(false);
 
         UncaughtExceptionUtil.declare();
 
@@ -125,6 +125,7 @@ public abstract class NettyClient {
         }
 
         setState(ChannelState.CLOSED);
+
 
         if (channel != null) {
             ChannelFuture future = channel.close();
