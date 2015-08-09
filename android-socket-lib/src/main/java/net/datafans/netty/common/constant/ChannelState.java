@@ -1,5 +1,5 @@
 package net.datafans.netty.common.constant;
 
 public enum ChannelState {
-	RUNNING,CLOSED,CONNECTING,CLOSING
+	RUNNING,CLOSED,CONNECTING,CLOSING,FETCHED,FETCHING
 }

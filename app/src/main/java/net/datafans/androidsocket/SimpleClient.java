@@ -2,6 +2,8 @@ package net.datafans.androidsocket;
 
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
+
 import net.datafans.android.socket.CommonClient;
 import net.datafans.androidsocket.handler.common.constant.Protocal;
 import net.datafans.androidsocket.handler.common.entity.DataPackage;
@@ -10,6 +12,9 @@ import net.datafans.androidsocket.handler.common.handler.DataPackageEncoder;
 import net.datafans.netty.common.config.GlobalConfig;
 import net.datafans.netty.common.constant.ChannelState;
 import net.datafans.netty.common.constant.Tag;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.netty.channel.ChannelHandler;
 
@@ -67,6 +72,7 @@ public class SimpleClient extends CommonClient {
 
         if (state == ChannelState.RUNNING){
             //登陆
+            write(getLoginPackage());
         }
     }
 
@@ -81,5 +87,15 @@ public class SimpleClient extends CommonClient {
         if (client == null)
             client = new SimpleClient();
         return client;
+    }
+
+    private DataPackage getLoginPackage(){
+
+        DataPackage pkg = DataPackage.LOGIN_PACKAGE;
+        Map<String, String> content = new HashMap<String,String>();
+        content.put("token", "e9037ed404fd49bc2d1e1529bece0b35");
+        content.put("syncKey","0");
+        pkg.setContent(JSON.toJSONString(content).getBytes());
+        return pkg;
     }
 }

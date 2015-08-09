@@ -16,12 +16,7 @@ public class DataPackage implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public final static DataPackage HEARTBEAT_PACKAGE = new DataPackage(Version.V1, BizType.HEARTBEAT);
-	public final static DataPackage LOGIN_SUCCESS_PACKAGE = new DataPackage(Version.V1, BizType.LOGIN, JSON
-			.toJSONString(new SuccessResponse()).getBytes());
-	public final static DataPackage LOGIN_FAIL_PACKAGE = new DataPackage(Version.V1, BizType.LOGIN, JSON.toJSONString(
-			new ErrorResponse(1001, "login failed")).getBytes());
-	public final static DataPackage LOGIN_INVALID_PACKAGE = new DataPackage(Version.V1, BizType.LOGIN, JSON.toJSONString(
-			new ErrorResponse(1002, "login invalid")).getBytes());
+	public final static DataPackage LOGIN_PACKAGE = new DataPackage(Version.V1, BizType.LOGIN);
 	
 	
 	private int size;
