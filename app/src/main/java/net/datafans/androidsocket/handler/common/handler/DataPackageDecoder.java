@@ -19,7 +19,7 @@ public class DataPackageDecoder extends ByteToMessageDecoder {
 	protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception {
 
 		if (buf.readableBytes() < Protocal.HEADER_LENGTH) {
-			Log.e(Tag.NETTY_CLIENT, "READABLE_BYTES_ERROR " + buf);
+			Log.d(Tag.NETTY_CLIENT, "READABLE_BYTES_ERROR " + buf);
 			return;
 		}
 		

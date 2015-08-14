@@ -68,7 +68,7 @@ public class SimpleClient extends CommonClient {
 
     @Override
     protected void onChannelStateChanged(ChannelState state) {
-        Log.e(Tag.NETTY_CLIENT, state.toString());
+        Log.d(Tag.NETTY_CLIENT, state.toString());
 
         if (state == ChannelState.RUNNING){
             //登陆
@@ -78,7 +78,7 @@ public class SimpleClient extends CommonClient {
 
     @Override
     public void onMsgReceived(Object msg) {
-        Log.e(Tag.NETTY_CLIENT, msg.toString());
+        Log.i(Tag.NETTY_CLIENT, msg.toString());
     }
 
     private static SimpleClient client;
