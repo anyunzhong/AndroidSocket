@@ -30,7 +30,7 @@ public abstract class CommonClient extends NettyClient implements  MsgListener {
 
             @Override
             public ChannelHandler build() {
-                return new DataPackageHandler(CommonClient.this);
+                return new DataPacketHandler(CommonClient.this);
             }
         });
     }

@@ -3,7 +3,7 @@ package net.datafans.androidsocket.handler.common.handler;
 import android.util.Log;
 
 import net.datafans.androidsocket.handler.common.constant.Protocal;
-import net.datafans.androidsocket.handler.common.entity.DataPackage;
+import net.datafans.androidsocket.handler.common.entity.DataPacket;
 import net.datafans.netty.common.constant.Tag;
 
 import io.netty.buffer.ByteBuf;
@@ -11,9 +11,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
-import java.util.logging.Logger;
 
-public class DataPackageDecoder extends ByteToMessageDecoder {
+public class DataPacketDecoder extends ByteToMessageDecoder {
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception {
@@ -23,13 +22,13 @@ public class DataPackageDecoder extends ByteToMessageDecoder {
 			return;
 		}
 		
-		DataPackage pkg = new DataPackage();
-		fillPackage(pkg, buf);
+		DataPacket pkg = new DataPacket();
+		fillPacket(pkg, buf);
 		out.add(pkg);
 
 	}
 
-	private void fillPackage(final DataPackage pkg, final ByteBuf buf) {
+	private void fillPacket(final DataPacket pkg, final ByteBuf buf) {
 
 		// 头部开始
 		// 数据总长度

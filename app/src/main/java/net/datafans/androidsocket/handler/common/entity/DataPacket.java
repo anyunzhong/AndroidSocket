@@ -1,22 +1,18 @@
 package net.datafans.androidsocket.handler.common.entity;
 
-import com.alibaba.fastjson.JSON;
-
 import net.datafans.androidsocket.handler.common.constant.BizType;
 import net.datafans.androidsocket.handler.common.constant.Version;
-import net.datafans.androidsocket.handler.common.entity.response.ErrorResponse;
-import net.datafans.androidsocket.handler.common.entity.response.SuccessResponse;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
 
-public class DataPackage implements Serializable {
+public class DataPacket implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	public final static DataPackage HEARTBEAT_PACKAGE = new DataPackage(Version.V1, BizType.HEARTBEAT);
-	public final static DataPackage LOGIN_PACKAGE = new DataPackage(Version.V1, BizType.LOGIN);
+	public final static DataPacket HEARTBEAT_PACKET = new DataPacket(Version.V1, BizType.HEARTBEAT);
+	public final static DataPacket LOGIN_PACKET = new DataPacket(Version.V1, BizType.LOGIN);
 	
 	
 	private int size;
@@ -26,23 +22,23 @@ public class DataPackage implements Serializable {
 	private byte[] common;
 	private byte[] content;
 
-	public DataPackage() {
+	public DataPacket() {
 
 	}
 
-	public DataPackage(byte[] version, byte[] type) {
+	public DataPacket(byte[] version, byte[] type) {
 		super();
 		this.version = version;
 		this.type = type;
 	}
 	
-	public DataPackage(byte[] version, byte[] type, int msgId) {
+	public DataPacket(byte[] version, byte[] type, int msgId) {
 		super();
 		this.version = version;
 		this.type = type;
 	}
 
-	public DataPackage(byte[] version, byte[] type, byte[] content) {
+	public DataPacket(byte[] version, byte[] type, byte[] content) {
 		super();
 		this.version = version;
 		this.type = type;
@@ -99,7 +95,7 @@ public class DataPackage implements Serializable {
 
 	@Override
 	public String toString() {
-		return "DataPackage [size=" + size + ", version=" + version + ", id=" + id + ", type=" + type + ", common="
+		return "DataPacket [size=" + size + ", version=" + version + ", id=" + id + ", type=" + type + ", common="
 				+ Arrays.toString(common) + ", content=" + Arrays.toString(content) + "]";
 	}
 

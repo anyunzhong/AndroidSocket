@@ -1,22 +1,22 @@
 package net.datafans.androidsocket.handler.common.handler;
 
 import net.datafans.androidsocket.handler.common.constant.Protocal;
-import net.datafans.androidsocket.handler.common.entity.DataPackage;
+import net.datafans.androidsocket.handler.common.entity.DataPacket;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 
-public class DataPackageEncoder extends MessageToByteEncoder<DataPackage> {
+public class DataPacketEncoder extends MessageToByteEncoder<DataPacket> {
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, DataPackage pkg, ByteBuf buf) throws Exception {
+	protected void encode(ChannelHandlerContext ctx, DataPacket pkg, ByteBuf buf) throws Exception {
 		fillBuf(pkg, buf);
 		ctx.flush();
 	}
 
-	private void fillBuf(final DataPackage pkg, final ByteBuf buf) {
+	private void fillBuf(final DataPacket pkg, final ByteBuf buf) {
 
 		// 头部开始
 		// 数据总长度

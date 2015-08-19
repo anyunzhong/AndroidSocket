@@ -218,7 +218,7 @@ public abstract class NettyClient {
         return Config.Client.DEFAULT_HEARTBEAT_SEND_FAIL_THRESSHOLD;
     }
 
-    protected abstract Object getHeartbeatDataPackage();
+    protected abstract Object getHeartbeatDataPacket();
 
     protected abstract String getHost();
 
@@ -327,7 +327,7 @@ public abstract class NettyClient {
 
                     if (channel != null) {
                         ChannelFuture future = channel
-                                .writeAndFlush(getHeartbeatDataPackage());
+                                .writeAndFlush(getHeartbeatDataPacket());
                         future.addListener(heartbeatSendListener);
                     }
 

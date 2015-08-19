@@ -6,9 +6,9 @@ import com.alibaba.fastjson.JSON;
 
 import net.datafans.android.socket.CommonClient;
 import net.datafans.androidsocket.handler.common.constant.Protocal;
-import net.datafans.androidsocket.handler.common.entity.DataPackage;
-import net.datafans.androidsocket.handler.common.handler.DataPackageDecoder;
-import net.datafans.androidsocket.handler.common.handler.DataPackageEncoder;
+import net.datafans.androidsocket.handler.common.entity.DataPacket;
+import net.datafans.androidsocket.handler.common.handler.DataPacketDecoder;
+import net.datafans.androidsocket.handler.common.handler.DataPacketEncoder;
 import net.datafans.netty.common.config.GlobalConfig;
 import net.datafans.netty.common.constant.ChannelState;
 import net.datafans.netty.common.constant.Tag;
@@ -25,17 +25,17 @@ public class SimpleClient extends CommonClient {
 
     @Override
     protected ChannelHandler getEncoder() {
-        return new DataPackageEncoder();
+        return new DataPacketEncoder();
     }
 
     @Override
     protected ChannelHandler getDecoder() {
-        return new DataPackageDecoder();
+        return new DataPacketDecoder();
     }
 
     @Override
-    protected Object getHeartbeatDataPackage() {
-        return DataPackage.HEARTBEAT_PACKAGE;
+    protected Object getHeartbeatDataPacket() {
+        return DataPacket.HEARTBEAT_PACKET;
     }
 
     @Override
@@ -56,8 +56,8 @@ public class SimpleClient extends CommonClient {
     @Override
     protected void setFrameDecoderConfig(GlobalConfig.FrameDecoder config) {
         config.setOffset(0);
-        config.setLength(Protocal.FIELD_PACKAGE_SIZE_LENGTH);
-        config.setAdjustment(-Protocal.FIELD_PACKAGE_SIZE_LENGTH);
+        config.setLength(Protocal.FIELD_PACKET_SIZE_LENGTH);
+        config.setAdjustment(-Protocal.FIELD_PACKET_SIZE_LENGTH);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SimpleClient extends CommonClient {
 
         if (state == ChannelState.RUNNING){
             //登陆
-            write(getLoginPackage());
+            write(getLoginPacket());
         }
     }
 
@@ -89,9 +89,9 @@ public class SimpleClient extends CommonClient {
         return client;
     }
 
-    private DataPackage getLoginPackage(){
+    private DataPacket getLoginPacket(){
 
-        DataPackage pkg = DataPackage.LOGIN_PACKAGE;
+        DataPacket pkg = DataPacket.LOGIN_PACKET;
         Map<String, String> content = new HashMap<String,String>();
         content.put("token", "e9037ed404fd49bc2d1e1529bece0b35");
         content.put("syncKey","0");

@@ -12,14 +12,14 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.AttributeKey;
 
-public class DataPackageHandler extends ChannelInboundHandlerAdapter {
+public class DataPacketHandler extends ChannelInboundHandlerAdapter {
 
     private Session session;
 
     private MsgListener listener;
 
 
-    public  DataPackageHandler(MsgListener listener){
+    public DataPacketHandler(MsgListener listener){
         this.listener = listener;
     }
 
