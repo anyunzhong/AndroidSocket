@@ -13,23 +13,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SimpleClient.sharedInstance().connect();
-            }
-        }).start();
-
+        SimpleClient.sharedInstance().connect();
     }
-
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-       // SimpleClient.sharedInstance().terminate();
+        SimpleClient.sharedInstance().destroy();
     }
 
     @Override

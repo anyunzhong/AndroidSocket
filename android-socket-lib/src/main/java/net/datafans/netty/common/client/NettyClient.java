@@ -51,6 +51,12 @@ public abstract class NettyClient {
     protected NettyClient() {
 
         setState(ChannelState.CLOSED);
+
+        try {
+            init();
+        } catch (Exception e) {
+            Log.e(Tag.NETTY_CLIENT, "Netty初始化失败");
+        }
     }
 
     protected abstract void setHandlerList(final List<ChannelHandlerFactory> handlerList);
@@ -87,51 +93,69 @@ public abstract class NettyClient {
         autoDetectHeartbeart();
     }
 
-    public void connect() {
+    private void start() {
 
-        Log.i(Tag.NETTY_CLIENT,state.toString());
+        Log.i(Tag.NETTY_CLIENT, state.toString());
 
         if (state != ChannelState.CLOSED) {
             return;
         }
 
-
         try {
-
-            init();
 
             if (getPort() <= 0) {
                 throw new Exception("LISTEN_PORT_ILLEGAL");
             }
-            ChannelFuture future = bootstrap.connect(getHost(), getPort()).sync();
+
+
             setState(ChannelState.CONNECTING);
+
+            ChannelFuture future = bootstrap.connect(getHost(), getPort()).sync();
+
             future.addListener(channelStartListener);
 
-            future.channel().closeFuture().sync();
+            ChannelFuture closeFuture =  future.channel().closeFuture();
+            closeFuture.addListener(channelStopListener);
+            closeFuture.sync();
 
         } catch (Exception e) {
             setState(ChannelState.CLOSED);
-            Log.e(Tag.NETTY_CLIENT, e.toString());
+            Log.e(Tag.NETTY_CLIENT, "连接服务器异常 网络不通");
         }
 
 
     }
 
+    public void connect() {
+
+        pool.execute(new Runnable() {
+            @Override
+            public void run() {
+                start();
+            }
+        });
+    }
+
+
     public void disconnect() {
 
-        Log.i(Tag.NETTY_CLIENT,state.toString());
+        Log.i(Tag.NETTY_CLIENT, state.toString());
         if (state == ChannelState.CLOSED) {
             return;
         }
 
         setState(ChannelState.CLOSED);
 
-
         if (channel != null) {
             ChannelFuture future = channel.close();
             setState(ChannelState.CLOSING);
             future.addListener(channelStopListener);
         }
+
+    }
+
+
+    public void destroy() {
 
         setTerminate(true);
         if (workGroup != null)
@@ -140,7 +164,6 @@ public abstract class NettyClient {
         if (pool != null)
             pool.shutdownNow();
         Log.i(Tag.NETTY_CLIENT, "POOL_SHUTDOWN_GRACEFULLY");
-
     }
 
 
@@ -245,13 +268,13 @@ public abstract class NettyClient {
         public void operationComplete(ChannelFuture future) throws Exception {
 
             if (future.isSuccess()) {
-                Log.i(Tag.NETTY_CLIENT, "CHANNEL_OPENED " + channel);
+                Log.i(Tag.NETTY_CLIENT, "SOCKET连接开启" + channel);
                 restartTryTimes = 0;
                 channel = future.channel();
 
                 setState(ChannelState.RUNNING);
             } else {
-                Log.e(Tag.NETTY_CLIENT, "CHANNEL_CONNECTION_ERROR " + future.cause());
+                Log.e(Tag.NETTY_CLIENT, "SOCKET连接错误");
                 setState(ChannelState.CLOSED);
                 channel = null;
             }
@@ -302,11 +325,11 @@ public abstract class NettyClient {
                     break;
                 }
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                     if (state == ChannelState.CLOSED) {
                         restartTryTimes++;
                         Log.i(Tag.NETTY_CLIENT, "AUTO_RESTART_TIME " + restartTryTimes);
-                        NettyClient.this.connect();
+                        NettyClient.this.start();
                     }
                 } catch (Exception e) {
                     Log.e(Tag.NETTY_CLIENT, "AUTO_RESTART_THREAD_EXCEPTION " + e);
@@ -376,6 +399,7 @@ public abstract class NettyClient {
         @Override
         public void shutdown() {
             disconnect();
+            destroy();
         }
     };
 

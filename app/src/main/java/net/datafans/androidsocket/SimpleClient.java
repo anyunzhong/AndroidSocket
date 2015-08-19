@@ -62,7 +62,7 @@ public class SimpleClient extends CommonClient {
 
     @Override
     protected int autoReconnectTimesThreshold() {
-        return 10;
+        return Integer.MAX_VALUE;
     }
 
 
@@ -72,7 +72,7 @@ public class SimpleClient extends CommonClient {
 
         if (state == ChannelState.RUNNING){
             //登陆
-            write(getLoginPacket());
+            //write(getLoginPacket());
         }
     }
 
